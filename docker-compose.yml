@@ -27,7 +27,7 @@ services:
       "--unsafe-ws-external",
       "--validator",
 # Replace `INSERT_YOUR_ID` with your node ID (will be shown in telemetry)
-      "--name", "INSERT_YOUR_ID"
+      "--name", "$SUBSPACE_NODE_NAME"
     ]
     healthcheck:
       timeout: 5s
@@ -62,9 +62,9 @@ services:
       "--ws-server-listen-addr", "0.0.0.0:9955",
       "--listen-on", "/ip4/0.0.0.0/tcp/40333",
 # Replace `WALLET_ADDRESS` with your Polkadot.js wallet address
-      "--reward-address", "WALLET_ADDRESS",
+      "--reward-address", "$SUBSPACE_WALLET_ADDRESS",
 # Replace `PLOT_SIZE` with plot size in gigabytes or terabytes, for instance 100G or 2T (but leave at least 60G of disk space for node and some for OS)
-      "--plot-size", "PLOT_SIZE"
+      "--plot-size", "$SUBSPACE_PLOT_SIZE"
     ]
 volumes:
   node-data:
