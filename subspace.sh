@@ -50,8 +50,8 @@ printf "${GREEN}Конфигурация${NC}\n"
 mkdir subspace
 cd subspace
 
-$SUBSPACE_RELEASE=$(curl -s https://api.github.com/repos/subspace/subspace/releases | jq '[.[] | select(.prerelease==false) | select(.tag_name | startswith("runtime") | not) | select(.tag_name | startswith("chain-spec") | not)][0].tag_name')
-$SUBSPACE_CHAIN="gemini-2a"
+SUBSPACE_RELEASE=$(curl -s https://api.github.com/repos/subspace/subspace/releases | jq '[.[] | select(.prerelease==false) | select(.tag_name | startswith("runtime") | not) | select(.tag_name | startswith("chain-spec") | not)][0].tag_name' | tr -d \")
+SUBSPACE_CHAIN="gemini-2a"
 
 source $HOME/.bash_profile
 if [[ -z "${SUBSPACE_WALLET_ADDRESS}" ]]; then
@@ -74,7 +74,7 @@ docker-compose up -d
 
 
 if [[ `alias | grep subspace_logs | wc -l` == 0 ]]; then
-        echo 'cd $HOME/subspace && docker-compose logs --tail=1000 -f' > $HOME/.bash_profile
+        echo 'alias="cd $HOME/subspace && docker-compose logs --tail=1000 -f"' >> $HOME/.bash_profile
 fi
 
 source $HOME/.bash_profile
