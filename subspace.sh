@@ -44,7 +44,7 @@ if [[ "$1" != "update" ]]; then
 fi
 
 printf "${GREEN}Конфигурация${NC}\n"
-mkdir subspace
+mkdir -p subspace
 cd subspace
 
 export SUBSPACE_RELEASE=$(curl -s https://api.github.com/repos/subspace/subspace/releases | jq '[.[] | select(.prerelease==false) | select(.tag_name | startswith("runtime") | not) | select(.tag_name | startswith("chain-spec") | not)][0].tag_name' | tr -d \")
