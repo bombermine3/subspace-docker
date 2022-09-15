@@ -10,12 +10,7 @@ if [[ "$1" == "uninstall" ]]; then
         printf "${GREEN}Удаление ноды${NC}\n"
 
         if [[ "$2" == "--all" ]]; then
-                cat .bash_profile | grep -v SUBSPACE_WALLET_ADDRESS | grep -v SUBSPACE_NODE_NAME | grep -v SUBSPACE_PLOT_SIZE | grep -v subspace_logs > .bash_profile
-                unset SUBSPACE_WALLET_ADDRESS
-                unset SUBSPACE_NODE_NAME
-                unset SUBSPACE_PLOT_SIZE
-                unset SUBSPACE_RELEASE
-                unset SUBSPACE_CHAIN
+                cat .bash_profile | grep -v SUBSPACE_WALLET_ADDRESS | grep -v SUBSPACE_NODE_NAME | grep -v SUBSPACE_PLOT_SIZE > .bash_profile
         fi
 
         if [ ! -d "subspace" ]; then
@@ -52,8 +47,8 @@ printf "${GREEN}Конфигурация${NC}\n"
 mkdir subspace
 cd subspace
 
-SUBSPACE_RELEASE=$(curl -s https://api.github.com/repos/subspace/subspace/releases | jq '[.[] | select(.prerelease==false) | select(.tag_name | startswith("runtime") | not) | select(.tag_name | startswith("chain-spec") | not)][0].tag_name' | tr -d \")
-SUBSPACE_CHAIN="gemini-2a"
+export SUBSPACE_RELEASE=$(curl -s https://api.github.com/repos/subspace/subspace/releases | jq '[.[] | select(.prerelease==false) | select(.tag_name | startswith("runtime") | not) | select(.tag_name | startswith("chain-spec") | not)][0].tag_name' | tr -d \")
+export SUBSPACE_CHAIN="gemini-2a"
 
 source $HOME/.bash_profile
 if [[ -z "${SUBSPACE_WALLET_ADDRESS}" ]]; then
@@ -68,17 +63,18 @@ if [[ -z "${SUBSPACE_PLOT_SIZE}" ]]; then
         read -p "Введите размер плота (10Gb, 100Gb, 1Tb, etc.): " SUBSPACE_PLOT_SIZE
         echo 'export SUBSPACE_PLOT_SIZE='$SUBSPACE_PLOT_SIZE >> $HOME/.bash_profile
 fi
-
+source $HOME/.bash_profile
 wget -qO - https://github.com/bombermine3/subspace-docker/raw/main/docker-compose-auto.yml | envsubst > docker-compose.yml
 
 printf "${GREEN}Запуск ноды${NC}\n"
 docker-compose up -d
 
+printf "${GREEN}Установка завершена\n"
 
-if [[ `alias | grep subspace_logs | wc -l` == 0 ]]; then
-        echo 'alias subspace_logs="cd $HOME/subspace && docker-compose logs --tail=1000 -f"' >> $HOME/.bash_profile
-fi
+#if [[ `alias | grep subspace_logs | wc -l` == 0 ]]; then
+#        echo 'alias subspace_logs="cd $HOME/subspace && docker-compose logs --tail=1000 -f"' >> $HOME/.bash_profile
+#fi
 
-source $HOME/.bash_profile
+#source $HOME/.bash_profile
 
-printf "Проверка логов: subspace_logs\n"
+printf "${NC}Проверка логов: cd subspace && docker-compose logs --tail=1000 -f\n"
