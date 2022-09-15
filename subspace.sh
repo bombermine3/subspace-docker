@@ -28,10 +28,10 @@ printf "${GREEN}Обновление системы${NC}\n"
 apt -qq update -y
 apt -qq upgrade -y
 
-if [[ "$1" != "update" ]]; then
-        printf "${GREEN}Устанавка зависимостей${NC}\n"
-        apt -qq install curl wget jq -y
+printf "${GREEN}Устанавка зависимостей${NC}\n"
+apt -qq install curl wget jq -y
 
+if [[ "$1" != "update" ]]; then
         printf "${GREEN}Установка Docker${NC}\n"
         apt -qq purge docker docker-engine docker.io containerd docker-compose -y
         rm /usr/bin/docker-compose /usr/local/bin/docker-compose > /dev/null 2>&1
