@@ -14,6 +14,8 @@ if [[ "$1" == "uninstall" ]]; then
                 unset SUBSPACE_WALLET_ADDRESS
                 unset SUBSPACE_NODE_NAME
                 unset SUBSPACE_PLOT_SIZE
+                unset SUBSPACE_RELEASE
+                unset SUBSPACE_CHAIN
         fi
 
         if [ ! -d "subspace" ]; then
@@ -74,7 +76,7 @@ docker-compose up -d
 
 
 if [[ `alias | grep subspace_logs | wc -l` == 0 ]]; then
-        echo 'alias="cd $HOME/subspace && docker-compose logs --tail=1000 -f"' >> $HOME/.bash_profile
+        echo 'alias subspace_logs="cd $HOME/subspace && docker-compose logs --tail=1000 -f"' >> $HOME/.bash_profile
 fi
 
 source $HOME/.bash_profile
